@@ -3,10 +3,11 @@ import pandas as pd
 import joblib
 
 # Load model dan preprocessing
-model = joblib.load("models/model_obesitas.pkl")
+model = joblib.load("model_obesitas.pkl")
 scaler = joblib.load("scaler.pkl")
 label_encoders = joblib.load("label_encoder.pkl")
 target_encoder = joblib.load("target_encoder.pkl")
+
 
 st.title("Prediksi Tingkat Obesitas Berdasarkan Gaya Hidup")
 
@@ -35,8 +36,13 @@ def user_input():
 input_df = user_input()
 
 # Encoding kategorikal
+# Pastikan setiap nilai valid di encoder
 for col in label_encoders:
-    input_df[col] = label_encoders[col].transform(input_df[col])
+    le = label_encoders[col]
+    if input_df[col].values[0] not in le.classes_:
+        st.error(f"Nilai '{input_df[col].values[0]}' pada kolom '{col}' tidak dikenali oleh model.")
+        st.stop()
+    input_df[col] = le.transform(input_df[col])
 
 # Scaling
 input_scaled = scaler.transform(input_df)
