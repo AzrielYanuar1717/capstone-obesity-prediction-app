@@ -3,7 +3,7 @@ import pandas as pd
 import joblib
 
 # Load model dan preprocessing
-model = joblib.load("model_obesitas.pkl")
+model = joblib.load("models/model_obesitas.pkl")
 scaler = joblib.load("scaler.pkl")
 label_encoders = joblib.load("label_encoder.pkl")
 target_encoder = joblib.load("target_encoder.pkl")
